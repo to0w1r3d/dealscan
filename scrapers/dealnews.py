@@ -4,6 +4,8 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from typing import List, Dict, Optional
 import re
+import time
+import random
 
 
 class DealNewsScraper:
@@ -12,6 +14,7 @@ class DealNewsScraper:
     def __init__(self):
         self.base_url = "https://www.dealnews.com"
         self.staff_picks_url = f"{self.base_url}/features/Staff-Picks/"
+        self.session = requests.Session()
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
@@ -22,8 +25,12 @@ class DealNewsScraper:
             'Sec-Fetch-Dest': 'document',
             'Sec-Fetch-Mode': 'navigate',
             'Sec-Fetch-Site': 'none',
-            'Cache-Control': 'max-age=0'
+            'Sec-Fetch-User': '?1',
+            'DNT': '1',
+            'Cache-Control': 'max-age=0',
+            'Referer': 'https://www.google.com/'
         }
+        self.session.headers.update(self.headers)
 
     def scrape_deals(self) -> List[Dict]:
         """
@@ -33,7 +40,17 @@ class DealNewsScraper:
             List of deal dictionaries with title, price, link, etc.
         """
         try:
-            response = requests.get(self.staff_picks_url, headers=self.headers, timeout=10)
+            # Add random delay to seem more human-like
+            time.sleep(random.uniform(0.5, 1.5))
+
+            # Try the homepage first to get cookies
+            try:
+                self.session.get(self.base_url, timeout=10)
+                time.sleep(random.uniform(0.5, 1.0))
+            except:
+                pass
+
+            response = self.session.get(self.staff_picks_url, timeout=15)
             response.raise_for_status()
 
             soup = BeautifulSoup(response.content, 'lxml')
