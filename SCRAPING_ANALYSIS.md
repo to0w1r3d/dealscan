@@ -1,13 +1,22 @@
-# Slickdeals Scraping Analysis
+# Deal Sites Scraping Analysis
 
 ## Overview
 
-According to external analysis, **Slickdeals has a 0/10 scraping difficulty** (Easy):
+Both target sites have **0/10 scraping difficulty** (Easy):
+
+### Slickdeals.net
 - ✅ **robots.txt**: Allows scraping
 - ✅ **TLS Fingerprinting**: No blocking detected
 - ✅ **Rate Limiting**: No blocking after 12 requests
+- ⚠️ **Status**: Currently blocked (datacenter IP)
 
-However, our tests consistently return **403 Forbidden** errors.
+### DealNews.com
+- ✅ **robots.txt**: Allows scraping with **2.0 second crawl-delay** (MUST respect)
+- ✅ **TLS Fingerprinting**: No blocking detected
+- ✅ **Rate Limiting**: No blocking after 12 requests
+- ⚠️ **Status**: Currently blocked (datacenter IP)
+
+**Both sites return 403 Forbidden errors in our test environment.**
 
 ## Why the Discrepancy?
 
@@ -96,6 +105,32 @@ https://slickdeals.net/newsearch.php?mode=frontpage&searcharea=deals&searchin=fi
 
 RSS feeds are often less protected than HTML scraping.
 
+## robots.txt Compliance
+
+### Slickdeals
+- ✅ Allows all user-agents
+- No specific crawl-delay requirement
+- Recommended: 1-2 seconds between requests as good practice
+
+### DealNews - IMPORTANT
+- ✅ Allows all user-agents
+- ⚠️ **Requires 2.0 second crawl-delay** (specified in robots.txt)
+- **MUST respect this delay** to be compliant
+
+```python
+from scrapers.dealnews_advanced import DealNewsAdvancedScraper
+
+# DealNews scraper automatically enforces 2-second crawl-delay
+scraper = DealNewsAdvancedScraper()
+deals = scraper.scrape_deals()  # Automatically waits 2+ seconds between requests
+```
+
+**Non-compliance consequences:**
+- Risk of IP blocking
+- Violates robots.txt protocol
+- Potential legal issues
+- Unfair server load
+
 ## Implementation Recommendations
 
 ### For Development/Testing
@@ -110,15 +145,21 @@ python main.py --demo -q "laptop"
 
 ```python
 import time
+from scrapers.slickdeals_advanced import SlickdealsAdvancedScraper
+from scrapers.dealnews_advanced import DealNewsAdvancedScraper
 
-# Scraper with residential proxy
-scraper = SlickdealsAdvancedScraper(
+# Slickdeals - 1-2 second delay recommended
+slickdeals = SlickdealsAdvancedScraper(
     proxy=os.getenv('RESIDENTIAL_PROXY_URL')
 )
+time.sleep(random.uniform(1, 2))
+slickdeals_deals = slickdeals.scrape_deals()
 
-# Respectful rate limiting
-time.sleep(random.uniform(2, 5))
-deals = scraper.scrape_deals()
+# DealNews - 2 second delay REQUIRED (handled automatically)
+dealnews = DealNewsAdvancedScraper(
+    proxy=os.getenv('RESIDENTIAL_PROXY_URL')
+)
+dealnews_deals = dealnews.scrape_deals()  # Auto-enforces 2s delay
 ```
 
 **Rate limiting guidelines:**

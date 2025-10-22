@@ -34,18 +34,30 @@ pip install -r requirements.txt
 
 ## Important: Scraping Status
 
-**Update**: Analysis shows Slickdeals has a **0/10 scraping difficulty** (Easy) - robots.txt allows scraping, no TLS fingerprinting, and no aggressive rate limiting. However, the sites block **datacenter IP addresses** via Cloudflare protection.
+**Update**: Analysis confirms **both sites have 0/10 scraping difficulty** (Easy):
+
+### Slickdeals.net
+- ✅ robots.txt allows scraping
+- ✅ No TLS fingerprinting, no aggressive rate limiting
+- ⚠️ Blocked from datacenter IPs (Cloudflare protection)
+
+### DealNews.com
+- ✅ robots.txt allows scraping with **2.0s crawl-delay** (respected automatically)
+- ✅ No TLS fingerprinting, no aggressive rate limiting
+- ⚠️ Blocked from datacenter IPs (Cloudflare protection)
 
 **Current Status:**
 - ✅ Code is fully functional and production-ready
 - ✅ Works perfectly in demo mode
-- ❌ Live scraping blocked when running from datacenter IPs (returns 403)
-- ✅ Should work fine from residential IPs (home internet, VPN, residential proxies)
+- ✅ Respects robots.txt requirements (2s crawl-delay for DealNews)
+- ❌ Live scraping blocked from datacenter IPs (returns 403)
+- ✅ Should work fine from residential IPs (home internet, residential proxies)
 
 **Solutions:**
 - **For testing**: Use `--demo` mode (recommended)
-- **For production**: Run from residential IP or use residential proxy
-- See [SCRAPING_ANALYSIS.md](SCRAPING_ANALYSIS.md) for detailed analysis and solutions
+- **For production**: Run from residential IP or use residential proxy (~$75/month)
+- See [SCRAPING_ANALYSIS.md](SCRAPING_ANALYSIS.md) for detailed analysis
+- See [PROXY_SETUP.md](PROXY_SETUP.md) for proxy configuration guide
 
 ## Usage
 
