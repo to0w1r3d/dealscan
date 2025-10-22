@@ -32,6 +32,21 @@ A Python-based command-line tool that searches and ranks product deals from Slic
 pip install -r requirements.txt
 ```
 
+## Important: Scraping Status
+
+**Update**: Analysis shows Slickdeals has a **0/10 scraping difficulty** (Easy) - robots.txt allows scraping, no TLS fingerprinting, and no aggressive rate limiting. However, the sites block **datacenter IP addresses** via Cloudflare protection.
+
+**Current Status:**
+- ✅ Code is fully functional and production-ready
+- ✅ Works perfectly in demo mode
+- ❌ Live scraping blocked when running from datacenter IPs (returns 403)
+- ✅ Should work fine from residential IPs (home internet, VPN, residential proxies)
+
+**Solutions:**
+- **For testing**: Use `--demo` mode (recommended)
+- **For production**: Run from residential IP or use residential proxy
+- See [SCRAPING_ANALYSIS.md](SCRAPING_ANALYSIS.md) for detailed analysis and solutions
+
 ## Usage
 
 ### Standard Mode (Live Scraping)
