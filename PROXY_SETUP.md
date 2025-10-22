@@ -2,6 +2,26 @@
 
 Since Slickdeals blocks datacenter IPs but has a 0/10 scraping difficulty from residential IPs, using a residential proxy is the recommended solution for production deployments.
 
+## Prerequisites
+
+Before setting up proxies, ensure DealScan is installed in a virtual environment:
+
+```bash
+# Clone and setup (if not done already)
+git clone https://github.com/to0w1r3d/dealscan.git
+cd dealscan
+
+# Create and activate virtual environment
+python3 -m venv venv
+source venv/bin/activate  # Linux/Mac
+# or: venv\Scripts\activate  # Windows
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+See [INSTALL.md](INSTALL.md) for detailed installation instructions.
+
 ## Quick Start with Proxy
 
 ### Method 1: Environment Variable

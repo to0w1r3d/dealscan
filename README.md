@@ -2,6 +2,24 @@
 
 A Python-based command-line tool that searches and ranks product deals from Slickdeals and DealNews.
 
+## 🚀 Quick Start
+
+```bash
+# Clone and setup with virtual environment
+git clone https://github.com/to0w1r3d/dealscan.git
+cd dealscan
+python3 -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+
+# Try it out!
+python main.py --demo -q "laptop"
+```
+
+**📖 Detailed guides:**
+- [QUICKSTART.md](QUICKSTART.md) - Get started in 5 minutes
+- [INSTALL.md](INSTALL.md) - Complete installation guide
+
 ## Features
 
 - Scrapes the latest deals from:
@@ -26,10 +44,40 @@ A Python-based command-line tool that searches and ranks product deals from Slic
 ### Setup
 
 1. Clone or download this repository
+```bash
+git clone https://github.com/to0w1r3d/dealscan.git
+cd dealscan
+```
 
-2. Install dependencies:
+2. Create and activate a virtual environment (recommended):
+
+**Linux/Mac:**
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+**Windows:**
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
+3. Install dependencies:
 ```bash
 pip install -r requirements.txt
+```
+
+4. Verify installation:
+```bash
+python main.py --help
+```
+
+### Deactivating Virtual Environment
+
+When you're done:
+```bash
+deactivate
 ```
 
 ## Important: Scraping Status
